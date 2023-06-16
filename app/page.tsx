@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
 import { buttonVariants } from "@/components/ui/button";
-import TimeZoneMap from "@/components/time-zone-map";
 
 export default function IndexPage() {
   return (
@@ -15,7 +14,6 @@ export default function IndexPage() {
           A simple tool to calculate the time difference between two or more
           cities/countries.
         </p>
-        <TimeZoneMap />
       </div>
       <div className="flex gap-4">
         <Link
