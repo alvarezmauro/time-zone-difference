@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import TimezoneSelect, { ITimezoneOption } from "react-timezone-select";
+import TimezoneSelect, { type ITimezone } from "react-timezone-select";
 
 export default function TimeZoneSelect() {
-  const [selectedTimezone, setSelectedTimezone] = useState(
+  const [selectedTimezone, setSelectedTimezone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
 
   const handleTimezoneChange = function handleTimezoneChange(
-    timezone: ITimezoneOption,
+    timezone: ITimezone,
   ) {
-    console.log(timezone.value);
-    setSelectedTimezone(timezone.value);
+    console.log(timezone);
+    setSelectedTimezone(timezone);
   };
 
   return (
