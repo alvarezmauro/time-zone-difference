@@ -3,7 +3,11 @@
 import { useState } from "react";
 import TimezoneSelect, { type ITimezone } from "react-timezone-select";
 
-export default function TimeZoneSelect() {
+type TimeZoneSelectProps = {
+  onChange?: (timezone: ITimezone) => void;
+};
+
+export default function TimeZoneSelect({ onChange }: TimeZoneSelectProps) {
   const [selectedTimezone, setSelectedTimezone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -11,8 +15,10 @@ export default function TimeZoneSelect() {
   const handleTimezoneChange = function handleTimezoneChange(
     timezone: ITimezone,
   ) {
-    console.log(timezone);
     setSelectedTimezone(timezone);
+    if (onChange) {
+      onChange(timezone);
+    }
   };
 
   return (
