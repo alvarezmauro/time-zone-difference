@@ -1,8 +1,13 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
 import { buttonVariants } from "@/components/ui/button";
-import TimeZoneSelect from "@/components/TimeZoneSelect";
+
+const DynamicTimeZoneSelect = dynamic(
+  () => import("@/components/TimeZoneSelect"),
+  { ssr: false },
+);
 
 export default function IndexPage() {
   return (
@@ -15,7 +20,7 @@ export default function IndexPage() {
           A simple tool to calculate the time difference between two or more
           cities/countries.
         </p>
-        <TimeZoneSelect />
+        <DynamicTimeZoneSelect />
       </div>
       <div className="flex gap-4">
         <Link
