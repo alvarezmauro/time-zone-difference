@@ -54,21 +54,34 @@ export function TimeZoneTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          {timeZoneData.map((timeZone) => (
-            <TableHead key={`${timeZone.id}_title`}>
-              {timeZone.altName}
-            </TableHead>
-          ))}
+          {timeZoneData.map((timeZone, index) => {
+            let className = "border-x";
+            if (index === timeZoneData.length - 1 || index === 0) {
+              className = "";
+            }
+            return (
+              <TableHead key={`${timeZone.id}_title`} className={className}>
+                {timeZone.altName}
+              </TableHead>
+            );
+          })}
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="border-b">
         {Array.from(Array(24).keys()).map((hour) => (
           <TableRow key={hour}>
-            {timeZoneData.map((timeZone) => (
-              <TableCell className="text-center" key={`${timeZone.id}_${hour}`}>
-                {getHourValue(hour + timeZone.offset, "12")}
-              </TableCell>
-            ))}
+            {timeZoneData.map((timeZone, index) => {
+              let className = "border-x";
+              if (index === timeZoneData.length - 1 || index === 0) {
+                className = "";
+              }
+
+              return (
+                <TableCell className={className} key={`${timeZone.id}_${hour}`}>
+                  {getHourValue(hour + timeZone.offset, "12")}
+                </TableCell>
+              );
+            })}
           </TableRow>
         ))}
       </TableBody>
