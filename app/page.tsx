@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { siteConfig } from "@/config/site";
 import { buttonVariants } from "@/components/ui/button";
-import TimeZoneTable from "@/components/TimeZoneTable";
 
 const DynamicTimeZoneSelect = dynamic(
   () => import("@/components/TimeZoneSelect"),
@@ -22,7 +21,6 @@ export default function IndexPage() {
           cities/countries.
         </p>
         <DynamicTimeZoneSelect />
-        <TimeZoneTable />
       </div>
       <div className="flex gap-4">
         <Link

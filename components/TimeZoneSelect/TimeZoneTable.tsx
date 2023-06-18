@@ -1,5 +1,7 @@
 "use client";
 
+import { type ITimezoneOption } from "react-timezone-select";
+
 import {
   Table,
   TableBody,
@@ -8,23 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import { timeZoneData } from "./mockData";
-
-type TimeZoneColumn = {
-  id: string;
-  label: string;
-  offset: number;
-  abbrev: string;
-  altName: string;
-};
-
-function calculateTimeDifference(timeZone: TimeZoneColumn) {
-  const date = new Date();
-  const utc = date.getTime() + date.getTimezoneOffset() * 60000;
-  const newDate = new Date(utc + 3600000 * timeZone.offset);
-  return newDate.toLocaleString();
-}
 
 function getHourValue(hour: number, clockType: "12" | "24"): string {
   let hourValue = hour % 24;
@@ -49,18 +34,22 @@ function getHourValue(hour: number, clockType: "12" | "24"): string {
   )}`;
 }
 
-export function TimeZoneTable() {
+export default function TimeZoneTable({
+  timeZoneData,
+}: {
+  timeZoneData: ITimezoneOption[];
+}) {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
+        <TableRow className="transition-none hover:bg-inherit">
           {timeZoneData.map((timeZone, index) => {
             let className = "border-x";
             if (index === timeZoneData.length - 1 || index === 0) {
               className = "";
             }
             return (
-              <TableHead key={`${timeZone.id}_title`} className={className}>
+              <TableHead key={`${timeZone.value}_title`} className={className}>
                 {timeZone.altName}
               </TableHead>
             );
@@ -76,9 +65,14 @@ export function TimeZoneTable() {
                 className = "";
               }
 
+              const offset = timeZone.offset ?? 0;
+
               return (
-                <TableCell className={className} key={`${timeZone.id}_${hour}`}>
-                  {getHourValue(hour + timeZone.offset, "12")}
+                <TableCell
+                  className={className}
+                  key={`${timeZone.value}_${hour}`}
+                >
+                  {getHourValue(hour + offset, "12")}
                 </TableCell>
               );
             })}
