@@ -40,7 +40,7 @@ export default function TimeZoneTable({
   timeZoneData: ITimezoneOption[];
 }) {
   return (
-    <Table>
+    <Table className="overflow-x-auto">
       <TableHeader>
         <TableRow className="transition-none hover:bg-inherit">
           {timeZoneData.map((timeZone, index) => {
@@ -64,6 +64,8 @@ export default function TimeZoneTable({
               if (index === timeZoneData.length - 1 || index === 0) {
                 className = "";
               }
+
+              className += " min-w-[120px]";
 
               const offset = timeZone.offset ?? 0;
 
