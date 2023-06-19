@@ -37,7 +37,7 @@ export default function TimeZoneSelect() {
       <TimezoneSelect
         value={selectedTimeZone}
         onChange={handleTimezoneChange}
-        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        className="w-full max-w-[700px] rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       />
       <TimeZoneTable timeZoneData={timeZoneData} />
     </>
