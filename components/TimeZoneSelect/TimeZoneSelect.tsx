@@ -6,6 +6,7 @@ import TimezoneSelect, {
   type ITimezone,
   type ITimezoneOption,
 } from "react-timezone-select";
+import useLocalStorage from "use-local-storage";
 
 import TimeZoneTable from "./TimeZoneTable";
 
@@ -29,16 +30,20 @@ const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
   (typeof obj.altName === "undefined" || typeof obj.altName === "string") &&
   (typeof obj.offset === "undefined" || typeof obj.offset === "number");
 
-export default function TimeZoneSelect({
-  timeZoneData: propTimeZoneData = [],
-}: {
-  timeZoneData?: ITimezoneOption[];
-}) {
+/**
+ * TimeZoneSelect component
+ *
+ * @returns {JSX.Element} - Select input to pick a timezone and table to
+ * display all the different timezones
+ */
+export default function TimeZoneSelect() {
   const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
-  const [timeZoneData, setTimeZoneData] =
-    useState<ITimezoneOption[]>(propTimeZoneData);
+  const [timeZoneData, setTimeZoneData] = useLocalStorage<ITimezoneOption[]>(
+    "timeZone",
+    [],
+  );
 
   const handleTimezoneChange = function handleTimezoneChange(
     timezone: ITimezone,
