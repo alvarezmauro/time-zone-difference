@@ -30,15 +30,15 @@ const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
   (typeof obj.offset === "undefined" || typeof obj.offset === "number");
 
 export default function TimeZoneSelect({
-  timezoneData = [],
+  timeZoneData: propTimeZoneData = [],
 }: {
-  timezoneData: ITimezoneOption[];
+  timeZoneData?: ITimezoneOption[];
 }) {
   const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
   const [timeZoneData, setTimeZoneData] =
-    useState<ITimezoneOption[]>(timezoneData);
+    useState<ITimezoneOption[]>(propTimeZoneData);
 
   const handleTimezoneChange = function handleTimezoneChange(
     timezone: ITimezone,
