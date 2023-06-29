@@ -122,6 +122,7 @@ export default function TimeZoneSelect() {
         })}
         className="w-full max-w-[700px]"
       />
+      <br />
       <TimeZoneTable timeZoneData={timeZoneData} />
     </>
   );
