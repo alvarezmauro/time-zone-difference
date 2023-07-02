@@ -36,7 +36,7 @@ const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
  * @returns {JSX.Element} - Select input to pick a timezone and table to
  * display all the different timezones
  */
-export default function TimeZoneSelect() {
+const TimeZoneSelect: React.FC = () => {
   const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -50,9 +50,41 @@ export default function TimeZoneSelect() {
   ) {
     setSelectedTimeZone(timezone);
     if (isITimezoneOption(timezone)) {
-      setTimeZoneData([...timeZoneData, timezone]);
+      if (!timeZoneData.some((tz) => tz.value === timezone.value)) {
+        setTimeZoneData([...timeZoneData, timezone]);
+      }
     }
   };
+
+  function onTimezoneDelete(timezone: ITimezone) {
+    if (isITimezoneOption(timezone)) {
+      setTimeZoneData(timeZoneData.filter((tz) => tz.value !== timezone.value));
+    }
+  }
+
+  function moveTimeZoneLeft(timezone: ITimezone) {
+    if (isITimezoneOption(timezone)) {
+      const index = timeZoneData.findIndex((tz) => tz.value === timezone.value);
+      if (index > 0) {
+        const newTimeZoneData = [...timeZoneData];
+        newTimeZoneData[index] = timeZoneData[index - 1];
+        newTimeZoneData[index - 1] = timezone;
+        setTimeZoneData(newTimeZoneData);
+      }
+    }
+  }
+
+  function moveTimeZoneRight(timezone: ITimezone) {
+    if (isITimezoneOption(timezone)) {
+      const index = timeZoneData.findIndex((tz) => tz.value === timezone.value);
+      if (index < timeZoneData.length - 1) {
+        const newTimeZoneData = [...timeZoneData];
+        newTimeZoneData[index] = timeZoneData[index + 1];
+        newTimeZoneData[index + 1] = timezone;
+        setTimeZoneData(newTimeZoneData);
+      }
+    }
+  }
 
   return (
     <>
@@ -123,7 +155,14 @@ export default function TimeZoneSelect() {
         className="w-full max-w-[700px]"
       />
       <br />
-      <TimeZoneTable timeZoneData={timeZoneData} />
+      <TimeZoneTable
+        timeZoneData={timeZoneData}
+        onTimeZoneDelete={onTimezoneDelete}
+        moveTimeZoneLeft={moveTimeZoneLeft}
+        moveTimeZoneRight={moveTimeZoneRight}
+      />
     </>
   );
-}
+};
+
+export default TimeZoneSelect;
