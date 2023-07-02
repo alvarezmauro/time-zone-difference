@@ -50,7 +50,7 @@ const TimeZoneTable: React.FC<ITimeZoneTableProps> = ({
   moveTimeZoneLeft,
   moveTimeZoneRight,
 }) => (
-  <Table className="w-auto overflow-x-auto">
+  <Table className="w-full overflow-x-auto sm:w-auto">
     <TableHeader>
       <TableRow className="transition-none hover:bg-inherit">
         {timeZoneData.map((timeZone, index) => {
@@ -122,7 +122,7 @@ const TimeZoneTable: React.FC<ITimeZoneTableProps> = ({
             return (
               <TableCell
                 className={cn(
-                  "min-w-[16rem] px-0 text-center",
+                  "min-w-[9rem] px-0 text-center sm:w-[16rem]",
                   tableCellBorderX,
                 )}
                 key={`${timeZone.value}_${hour}`}
