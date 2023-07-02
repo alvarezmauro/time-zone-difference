@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getCssVariable from "@/utils/getCssVariable";
+import { useTheme } from "next-themes";
 import TimezoneSelect, {
   type ITimezone,
   type ITimezoneOption,
@@ -9,17 +10,6 @@ import TimezoneSelect, {
 import useLocalStorage from "use-local-storage";
 
 import TimeZoneTable from "./TimeZoneTable";
-
-const CSS_VARIABLES = {
-  background: `hsl(${getCssVariable("--background")})`,
-  foreground: `hsl(${getCssVariable("--foreground")})`,
-  primary: `hsl(${getCssVariable("--primary")})`,
-  primaryForeground: `hsl(${getCssVariable("--primary-foreground")})`,
-  input: `hsl(${getCssVariable("--input")})`,
-  ring: `hsl(${getCssVariable("--ring")})`,
-  radius: getCssVariable("--radius"),
-  accent: `hsl(${getCssVariable("--accent")})`,
-};
 
 const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
   typeof obj === "object" &&
@@ -31,12 +21,30 @@ const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
   (typeof obj.offset === "undefined" || typeof obj.offset === "number");
 
 /**
+ * Get CSS variables
+ * @returns CSS variable
+ */
+function getCustomStyles() {
+  return {
+    background: `hsl(${getCssVariable("--background")})`,
+    foreground: `hsl(${getCssVariable("--foreground")})`,
+    primary: `hsl(${getCssVariable("--primary")})`,
+    primaryForeground: `hsl(${getCssVariable("--primary-foreground")})`,
+    input: `hsl(${getCssVariable("--input")})`,
+    ring: `hsl(${getCssVariable("--ring")})`,
+    radius: getCssVariable("--radius"),
+    accent: `hsl(${getCssVariable("--accent")})`,
+  };
+}
+
+/**
  * TimeZoneSelect component
  *
  * @returns {JSX.Element} - Select input to pick a timezone and table to
  * display all the different timezones
  */
 const TimeZoneSelect: React.FC = () => {
+  const { theme: themeValue } = useTheme();
   const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -44,6 +52,17 @@ const TimeZoneSelect: React.FC = () => {
     "timeZone",
     [],
   );
+  const [cssVariables, setCssVariables] = useState(getCustomStyles());
+
+  // This is a workaround to update the css variables when the theme changes
+  // otherwise the react-select component doesn't update the styles
+  useEffect(() => {
+    // Update the css variables when the theme changes after one second
+    // to allow the transition to finish
+    setTimeout(() => {
+      setCssVariables(getCustomStyles());
+    }, 0);
+  }, [themeValue]);
 
   const handleTimezoneChange = function handleTimezoneChange(
     timezone: ITimezone,
@@ -94,13 +113,13 @@ const TimeZoneSelect: React.FC = () => {
         styles={{
           control: (baseStyles) => ({
             ...baseStyles,
-            backgroundColor: CSS_VARIABLES.background,
-            borderColor: CSS_VARIABLES.input,
+            backgroundColor: `hsl(${getCssVariable("--background")})`,
+            borderColor: cssVariables.input,
             fontSize: ".875rem",
-            borderRadius: `calc(${CSS_VARIABLES.radius} - 2px)`,
+            borderRadius: `calc(${cssVariables.radius} - 2px)`,
             height: "2.5rem",
             "&:hover, &:focus": {
-              boxShadow: `${CSS_VARIABLES.background} 0px 0px 0px 2px, ${CSS_VARIABLES.ring} 0px 0px 0px 4px, ${CSS_VARIABLES.primary} 0px 0px 0px 0px`,
+              boxShadow: `${cssVariables.background} 0px 0px 0px 2px, ${cssVariables.ring} 0px 0px 0px 4px, ${cssVariables.primary} 0px 0px 0px 0px`,
             },
           }),
           valueContainer: (baseStyles) => ({
@@ -112,17 +131,17 @@ const TimeZoneSelect: React.FC = () => {
           }),
           input: (baseStyles) => ({
             ...baseStyles,
-            color: CSS_VARIABLES.foreground,
+            color: cssVariables.foreground,
           }),
           singleValue: (baseStyles) => ({
             ...baseStyles,
-            color: CSS_VARIABLES.foreground,
+            color: cssVariables.foreground,
           }),
           menu: (baseStyles) => ({
             ...baseStyles,
-            backgroundColor: CSS_VARIABLES.background,
-            borderRadius: CSS_VARIABLES.radius,
-            boxShadow: `0px 0px 0px 1px ${CSS_VARIABLES.ring}`,
+            backgroundColor: cssVariables.background,
+            borderRadius: cssVariables.radius,
+            boxShadow: `0px 0px 0px 1px ${cssVariables.ring}`,
             marginTop: "0.25rem",
             zIndex: 1,
             overflow: "hidden",
@@ -130,14 +149,14 @@ const TimeZoneSelect: React.FC = () => {
           option: (baseStyles, state) => ({
             ...baseStyles,
             backgroundColor: state.isFocused
-              ? CSS_VARIABLES.primary
-              : CSS_VARIABLES.background,
+              ? cssVariables.primary
+              : cssVariables.background,
             color: state.isFocused
-              ? CSS_VARIABLES.primaryForeground
-              : CSS_VARIABLES.foreground,
+              ? cssVariables.primaryForeground
+              : cssVariables.foreground,
             "&:hover": {
-              backgroundColor: CSS_VARIABLES.primary,
-              color: CSS_VARIABLES.primaryForeground,
+              backgroundColor: cssVariables.primary,
+              color: cssVariables.primaryForeground,
             },
           }),
         }}
@@ -146,10 +165,10 @@ const TimeZoneSelect: React.FC = () => {
           borderRadius: 0,
           colors: {
             ...theme.colors,
-            primary25: CSS_VARIABLES.accent,
-            primary50: CSS_VARIABLES.primaryForeground,
-            primary75: CSS_VARIABLES.ring,
-            primary: CSS_VARIABLES.ring,
+            primary25: cssVariables.accent,
+            primary50: cssVariables.primaryForeground,
+            primary75: cssVariables.ring,
+            primary: cssVariables.ring,
           },
         })}
         className="w-full max-w-[700px]"
