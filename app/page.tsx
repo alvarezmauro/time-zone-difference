@@ -1,9 +1,4 @@
-import dynamic from "next/dynamic";
-
-const DynamicTimeZoneSelect = dynamic(
-  () => import("@/components/TimeZoneSelect"),
-  { ssr: false },
-);
+import { TimeZoneSelect } from "@/components/TimeZoneSelect";
 
 export default function IndexPage() {
   return (
@@ -16,7 +11,8 @@ export default function IndexPage() {
           A simple tool to calculate the time difference between two or more
           cities/countries.
         </p>
-        <DynamicTimeZoneSelect />
+        {/* <DynamicTimeZoneSelect /> */}
+        <TimeZoneSelect />
       </div>
     </section>
   );
