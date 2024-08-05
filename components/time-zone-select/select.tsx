@@ -1,24 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import getCssVariable from "@/utils/getCssVariable";
+import getCssVariable from "@/lib/getCssVariable";
 import { useTheme } from "next-themes";
 import TimezoneSelect, {
   type ITimezone,
   type ITimezoneOption,
 } from "react-timezone-select";
-import useLocalStorage from "use-local-storage";
 
-import TimeZoneTable from "./TimeZoneTable";
+import { isITimezoneOption } from "@/lib/isITimezoneOption";
 
-const isITimezoneOption = (obj: ITimezone): obj is ITimezoneOption =>
-  typeof obj === "object" &&
-  obj !== null &&
-  typeof obj.value === "string" &&
-  typeof obj.label === "string" &&
-  (typeof obj.abbrev === "undefined" || typeof obj.abbrev === "string") &&
-  (typeof obj.altName === "undefined" || typeof obj.altName === "string") &&
-  (typeof obj.offset === "undefined" || typeof obj.offset === "number");
+// import TimeZoneTable from "./table";
 
 /**
  * Get CSS variables
@@ -37,21 +29,22 @@ function getCustomStyles() {
   };
 }
 
+type SelectProps = {
+  selectedTimeZone: ITimezone;
+  setSelectedTimeZone: (timezone: ITimezone) => void;
+  timeZoneData: ITimezoneOption[];
+  setTimeZoneData: (timeZoneData: ITimezoneOption[]) => void;
+};
+
 /**
- * TimeZoneSelect component
+ * Select component
  *
  * @returns {JSX.Element} - Select input to pick a timezone and table to
  * display all the different timezones
  */
-const TimeZoneSelect: React.FC = () => {
+const Select: React.FC<SelectProps> = ({selectedTimeZone, setSelectedTimeZone, timeZoneData, setTimeZoneData}) => {
   const { theme: themeValue } = useTheme();
-  const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-  );
-  const [timeZoneData, setTimeZoneData] = useLocalStorage<ITimezoneOption[]>(
-    "timeZone",
-    [],
-  );
+ 
   const [cssVariables, setCssVariables] = useState(getCustomStyles());
 
   // This is a workaround to update the css variables when the theme changes
@@ -75,35 +68,6 @@ const TimeZoneSelect: React.FC = () => {
     }
   };
 
-  function onTimezoneDelete(timezone: ITimezone) {
-    if (isITimezoneOption(timezone)) {
-      setTimeZoneData(timeZoneData.filter((tz) => tz.value !== timezone.value));
-    }
-  }
-
-  function moveTimeZoneLeft(timezone: ITimezone) {
-    if (isITimezoneOption(timezone)) {
-      const index = timeZoneData.findIndex((tz) => tz.value === timezone.value);
-      if (index > 0) {
-        const newTimeZoneData = [...timeZoneData];
-        newTimeZoneData[index] = timeZoneData[index - 1];
-        newTimeZoneData[index - 1] = timezone;
-        setTimeZoneData(newTimeZoneData);
-      }
-    }
-  }
-
-  function moveTimeZoneRight(timezone: ITimezone) {
-    if (isITimezoneOption(timezone)) {
-      const index = timeZoneData.findIndex((tz) => tz.value === timezone.value);
-      if (index < timeZoneData.length - 1) {
-        const newTimeZoneData = [...timeZoneData];
-        newTimeZoneData[index] = timeZoneData[index + 1];
-        newTimeZoneData[index + 1] = timezone;
-        setTimeZoneData(newTimeZoneData);
-      }
-    }
-  }
 
   return (
     <>
@@ -173,15 +137,8 @@ const TimeZoneSelect: React.FC = () => {
         })}
         className="w-full max-w-[700px]"
       />
-      <br />
-      <TimeZoneTable
-        timeZoneData={timeZoneData}
-        onTimeZoneDelete={onTimezoneDelete}
-        moveTimeZoneLeft={moveTimeZoneLeft}
-        moveTimeZoneRight={moveTimeZoneRight}
-      />
     </>
   );
 };
 
-export default TimeZoneSelect;
+export default Select;

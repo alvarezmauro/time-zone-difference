@@ -2,12 +2,12 @@
 
 ## Tech stack
 
-- Next.js 13 App Directory
+- Next.js 14 App Directory
 - Radix UI Primitives
 - Tailwind CSS
 - Icons from [Lucide](https://lucide.dev)
 - Dark mode with `next-themes`
-- Tailwind CSS class sortin, merging and linting.
+- Tailwind CSS class sorting, merging and linting.
 
 # Live demo
 - [time-zone-difference.alvarezmauro.com](https://time-zone-difference.alvarezmauro.com/)
