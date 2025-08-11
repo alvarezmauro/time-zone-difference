@@ -9,7 +9,12 @@
 - Dark mode with `next-themes`
 - Tailwind CSS class sorting, merging and linting.
 
+## Requirements
+
+- Node.js 22 or later
+
 # Live demo
+
 - [time-zone-difference.alvarezmauro.com](https://time-zone-difference.alvarezmauro.com/)
 - [time-zone-difference.mauroalvarez.com](https://time-zone-difference.mauroalvarez.com/)
 

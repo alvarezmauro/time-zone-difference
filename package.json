@@ -1,6 +1,9 @@
 {
   "name": "time-zone-difference",
   "version": "0.0.1",
+    "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
