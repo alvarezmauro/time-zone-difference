@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import getCssVariable from "@/lib/getCssVariable";
 import { useTheme } from "next-themes";
 import TimezoneSelect, {
   type ITimezone,
   type ITimezoneOption,
 } from "react-timezone-select";
 
+import getCssVariable from "@/lib/getCssVariable";
 import { isITimezoneOption } from "@/lib/isITimezoneOption";
 
 // import TimeZoneTable from "./table";
@@ -42,9 +42,14 @@ type SelectProps = {
  * @returns {JSX.Element} - Select input to pick a timezone and table to
  * display all the different timezones
  */
-const Select: React.FC<SelectProps> = ({selectedTimeZone, setSelectedTimeZone, timeZoneData, setTimeZoneData}) => {
+const Select: React.FC<SelectProps> = ({
+  selectedTimeZone,
+  setSelectedTimeZone,
+  timeZoneData,
+  setTimeZoneData,
+}) => {
   const { theme: themeValue } = useTheme();
- 
+
   const [cssVariables, setCssVariables] = useState(getCustomStyles());
 
   // This is a workaround to update the css variables when the theme changes
@@ -68,76 +73,73 @@ const Select: React.FC<SelectProps> = ({selectedTimeZone, setSelectedTimeZone, t
     }
   };
 
-
   return (
-    <>
-      <TimezoneSelect
-        value={selectedTimeZone}
-        onChange={handleTimezoneChange}
-        styles={{
-          control: (baseStyles) => ({
-            ...baseStyles,
-            backgroundColor: `hsl(${getCssVariable("--background")})`,
-            borderColor: cssVariables.input,
-            fontSize: ".875rem",
-            borderRadius: `calc(${cssVariables.radius} - 2px)`,
-            height: "2.5rem",
-            "&:hover, &:focus": {
-              boxShadow: `${cssVariables.background} 0px 0px 0px 2px, ${cssVariables.ring} 0px 0px 0px 4px, ${cssVariables.primary} 0px 0px 0px 0px`,
-            },
-          }),
-          valueContainer: (baseStyles) => ({
-            ...baseStyles,
-            lineHeight: "1.25rem",
-            paddingLeft: ".75rem",
-            paddingRight: ".75rem",
-            height: "2.5rem",
-          }),
-          input: (baseStyles) => ({
-            ...baseStyles,
-            color: cssVariables.foreground,
-          }),
-          singleValue: (baseStyles) => ({
-            ...baseStyles,
-            color: cssVariables.foreground,
-          }),
-          menu: (baseStyles) => ({
-            ...baseStyles,
-            backgroundColor: cssVariables.background,
-            borderRadius: cssVariables.radius,
-            boxShadow: `0px 0px 0px 1px ${cssVariables.ring}`,
-            marginTop: "0.25rem",
-            zIndex: 1,
-            overflow: "hidden",
-          }),
-          option: (baseStyles, state) => ({
-            ...baseStyles,
-            backgroundColor: state.isFocused
-              ? cssVariables.primary
-              : cssVariables.background,
-            color: state.isFocused
-              ? cssVariables.primaryForeground
-              : cssVariables.foreground,
-            "&:hover": {
-              backgroundColor: cssVariables.primary,
-              color: cssVariables.primaryForeground,
-            },
-          }),
-        }}
-        theme={(theme) => ({
-          ...theme,
-          borderRadius: 0,
-          colors: {
-            ...theme.colors,
-            primary25: cssVariables.accent,
-            primary50: cssVariables.primaryForeground,
-            primary75: cssVariables.ring,
-            primary: cssVariables.ring,
+    <TimezoneSelect
+      value={selectedTimeZone}
+      onChange={handleTimezoneChange}
+      styles={{
+        control: (baseStyles) => ({
+          ...baseStyles,
+          backgroundColor: `hsl(${getCssVariable("--background")})`,
+          borderColor: cssVariables.input,
+          fontSize: ".875rem",
+          borderRadius: `calc(${cssVariables.radius} - 2px)`,
+          height: "2.5rem",
+          "&:hover, &:focus": {
+            boxShadow: `${cssVariables.background} 0px 0px 0px 2px, ${cssVariables.ring} 0px 0px 0px 4px, ${cssVariables.primary} 0px 0px 0px 0px`,
           },
-        })}
-        className="w-full max-w-[700px]"
-      />
-    </>
+        }),
+        valueContainer: (baseStyles) => ({
+          ...baseStyles,
+          lineHeight: "1.25rem",
+          paddingLeft: ".75rem",
+          paddingRight: ".75rem",
+          height: "2.5rem",
+        }),
+        input: (baseStyles) => ({
+          ...baseStyles,
+          color: cssVariables.foreground,
+        }),
+        singleValue: (baseStyles) => ({
+          ...baseStyles,
+          color: cssVariables.foreground,
+        }),
+        menu: (baseStyles) => ({
+          ...baseStyles,
+          backgroundColor: cssVariables.background,
+          borderRadius: cssVariables.radius,
+          boxShadow: `0px 0px 0px 1px ${cssVariables.ring}`,
+          marginTop: "0.25rem",
+          zIndex: 1,
+          overflow: "hidden",
+        }),
+        option: (baseStyles, state) => ({
+          ...baseStyles,
+          backgroundColor: state.isFocused
+            ? cssVariables.primary
+            : cssVariables.background,
+          color: state.isFocused
+            ? cssVariables.primaryForeground
+            : cssVariables.foreground,
+          "&:hover": {
+            backgroundColor: cssVariables.primary,
+            color: cssVariables.primaryForeground,
+          },
+        }),
+      }}
+      theme={(theme) => ({
+        ...theme,
+        borderRadius: 0,
+        colors: {
+          ...theme.colors,
+          primary25: cssVariables.accent,
+          primary50: cssVariables.primaryForeground,
+          primary75: cssVariables.ring,
+          primary: cssVariables.ring,
+        },
+      })}
+      className="w-full max-w-[700px]"
+    />
   );
 };
 

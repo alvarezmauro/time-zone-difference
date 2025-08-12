@@ -1,21 +1,17 @@
 "use client";
 
-import useLocalStorage from "use-local-storage";
 import { useEffect, useState } from "react";
+import { type ITimezone, type ITimezoneOption } from "react-timezone-select";
+import useLocalStorage from "use-local-storage";
+
+import { isITimezoneOption } from "@/lib/isITimezoneOption";
 
 import Select from "./select";
 import Table from "./table";
 
-import { isITimezoneOption } from "@/lib/isITimezoneOption";
-
-import {
-  type ITimezone,
-  type ITimezoneOption,
-} from "react-timezone-select";
-
 const TimeZoneSelect: React.FC = () => {
-  const [isClient, setIsClient] = useState(false)
- 
+  const [isClient, setIsClient] = useState(false);
+
   const [selectedTimeZone, setSelectedTimeZone] = useState<ITimezone>(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -55,23 +51,28 @@ const TimeZoneSelect: React.FC = () => {
   }
 
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    setIsClient(true);
+  }, []);
 
   return (
     <div className="flex flex-col items-start gap-2">
-      {isClient && (<>
-        <Select selectedTimeZone={selectedTimeZone} setSelectedTimeZone={setSelectedTimeZone} timeZoneData={timeZoneData} setTimeZoneData={setTimeZoneData} />
-      <br />
-      <Table
-        timeZoneData={timeZoneData}
-        onTimeZoneDelete={onTimezoneDelete}
-        moveTimeZoneLeft={moveTimeZoneLeft}
-        moveTimeZoneRight={moveTimeZoneRight}
-      />
-      </>
+      {isClient && (
+        <>
+          <Select
+            selectedTimeZone={selectedTimeZone}
+            setSelectedTimeZone={setSelectedTimeZone}
+            timeZoneData={timeZoneData}
+            setTimeZoneData={setTimeZoneData}
+          />
+          <br />
+          <Table
+            timeZoneData={timeZoneData}
+            onTimeZoneDelete={onTimezoneDelete}
+            moveTimeZoneLeft={moveTimeZoneLeft}
+            moveTimeZoneRight={moveTimeZoneRight}
+          />
+        </>
       )}
-      
     </div>
   );
 };
